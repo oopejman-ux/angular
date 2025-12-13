@@ -1,0 +1,95 @@
+ng generate component analyzerimport { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-analyzer',
+  templateUrl: './analyzer.component.html',
+  styleUrls: ['./analyzer.component.css']
+})
+export class AnalyzerComponent {
+  numbers: string = '';
+  analysisResult: string = '';
+
+  analyzeNumbers() {
+    const numberArray = this.numbers.split(',').map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+
+    if (numberArray.length === 0) {
+      this.analysisResult = 'لطفاً اعداد معتبری وارد کنید.';
+      return;
+    }
+
+    const average = this.calculateAverage(numberArray);
+    const securityFactor = this.calculateSecurityFactor(numberArray);
+
+    this.analysisResult = `میانگین: ${average.toFixed(2)}, ضریب امنیت: ${securityFactor.toFixed(2)}`;
+  }
+
+  calculateAverage(arr: number[]): number {
+    const sum = arr.reduce((a, b) => a + b, 0);
+    return sum / arr.length;
+  }
+
+  calculateSecurityFactor(arr: number[]): number {
+    // برای مثال، ضریب امنیت می‌تواند انحراف معیار باشد
+    const mean = this.calculateAverage(arr);
+    const variance = arr.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / arr.length;
+    return Math.sqrt(variance);
+  }
+
+  openGoogle() {
+    window.open('https://www.google.com', '_blank');
+  }
+}<div class="analyzer-container">
+  <h2>برنامه آنالیزگر اعداد</h2>
+  <textarea [(ngModel)]="numbers" placeholder="اعداد را وارد کنید (با ویرگول جدا کنید)"></textarea>
+  <button (click)="analyzeNumbers()">محاسبه</button>
+  <button (click)="openGoogle()">ورود به گوگل</button>
+  
+  <div class="result">
+    <h3>نتایج:</h3>
+    <p>{{ analysisResult }}</p>
+  </div>
+</div>.analyzer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+textarea {
+  width: 300px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.result {
+  margin-top: 20px;
+}import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    AnalyzerComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule // اضافه کردن این خط
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }<app-analyzer></app-analyzer>
