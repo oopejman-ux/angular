@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>تحلیل اعداد و ذخیره ضرایب</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        input {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            width: 300px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            white-space: pre-wrap; /* برای حفظ فرمت متن */
+        }
+    </style>
+</head>
+<body>
+
+<h1>تحلیل اعداد و ذخیره ضرایب</h1>
+<textarea id="numberInput" rows="10" cols="30" placeholder="اعداد را وارد کنید (هر عدد در یک خط)"></textarea>
+<button onclick="analyzeNumbers()">تحلیل اعداد</button>
+<button onclick="downloadResults()">ذخیره ضرایب</button>
+
+<div id="result"></div>
+
+<script>
+    function analyzeNumbers() {
+        const input = document.getElementById("numberInput").value.trim();
+        const resultDiv = document.getElementById("result");
+
+        if (!input) {
+            resultDiv.textContent = "لطفاً اعداد را وارد کنید.";
+            return;
+        }
+
+        const numbers = input.split('\n').map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+        const coefficients = numbers.map(num => calculateCoefficient(num));
+
+        let output = "عدد\tضریب\n";
+        coefficients.forEach((coef, index) => {
+            output += `${numbers[index].toFixed(2)}\t${coef.toFixed(2)}\n`;
+        });
+
+        resultDiv.textContent = output;
+    }
+
+    function calculateCoefficient(num) {
+        // تابع محاسبه ضریب (می‌توانید الگوریتم خود را اینجا قرار دهید)
+        if (num < 0) {
+            return 0; // مثال: برای اعداد منفی ضریب 0
+        } else {
+            return num; // برای اعداد مثبت، ضریب برابر خود عدد است
+        }
+    }
+
+    function downloadResults() {
+        const resultDiv = document.getElementById("result").textContent;
+        const blob = new Blob([resultDiv], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'results.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+</body>
+</html><!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    Hello, World!
+  </h1>
+</body>
+</html>
